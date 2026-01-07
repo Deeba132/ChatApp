@@ -15,7 +15,7 @@
     <div id="chat">
       <label for="chat-1">Chat-1</label>
       <input type="text" id="message" placeholder="enter-text" />
-      <button id="send" onclick="sendmessage()">Send</button>
+      <button id="send" onclick="sendMessage()">Send</button>
       <p id="seemessage"></p>
     </div>
 
@@ -23,10 +23,9 @@
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 
     <script>
+      var socket = new SockJS("/ws");
+      var stompClient = Stomp.over(socket);
       function connect() {
-        var socket = new SockJS("/ws");
-        var stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function (frame) {
           stompClient.subscribe("/topics/messages", function (msg) {
             show(JSON.parse(msg.body));
@@ -39,8 +38,8 @@
         document.getElementById("message").value = "";
       }
       function show(message) {
-        var mess = document.getElementsById("seemessage");
-        mess.textContent = message;
+        var mess = document.getElementById("seemessage");
+        mess.innerHTML += JSON.stringify(message);
       }
       connect();
     </script>
