@@ -12,29 +12,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="#">upgrade your browser</a> to improve your experience.
-      </p>
-    <![endif]-->
-    <p id="chats"></p>
+    <div id="chat">
+      <label for="chat-1">Chat-1</label>
+      <input type="text" id="message" placeholder="enter-text" />
+      <button id="send" onclick="sendmessage()">Send</button>
+      <p id="seemessage"></p>
+    </div>
 
     <script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 
     <script>
-      var socket = new SockJS("/ws");
-      var stompClient = Stomp.over(socket);
+      function connect() {
+        var socket = new SockJS("/ws");
+        var stompClient = Stomp.over(socket);
 
-      stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/topics/messages", function (msg) {
-          console.log("Received: " + msg.body);
-          document.getElementById("chats").innerHTML += msg.body;
+        stompClient.connect({}, function (frame) {
+          stompClient.subscribe("/topics/messages", function (msg) {
+            show(JSON.parse(msg.body));
+          });
         });
-        stompClient.send("/app/send", {}, "Hello WebSocket!");
-        stompClient.send("/app/send", {}, "Worldly thoughts i get it ");
-      });
+      }
+      function sendMessage() {
+        var mess = document.getElementById("message").value;
+        stompClient.send("/app/send", {}, JSON.stringify(message));
+        document.getElementById("message").value = "";
+      }
+      function show(message) {
+        var mess = document.getElementsById("seemessage");
+        mess.textContent = message;
+      }
+      connect();
     </script>
   </body>
 </html>
