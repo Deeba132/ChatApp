@@ -1,12 +1,13 @@
 package com.example.demo;
-
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
 
-@RequestMapping("/messages")//server to client
-@SendTo("/topics")//client to controller
+@Controller
 public class ChatController {
-    static String chatsy(String msg){
+    @MessageMapping("/send")
+    @SendTo("/topics/messages")
+    public String chatsy(String msg){
         return msg;
     }
 }
