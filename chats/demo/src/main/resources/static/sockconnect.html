@@ -34,12 +34,18 @@
       }
       function sendMessage() {
         var mess = document.getElementById("message").value;
-        stompClient.send("/app/send", {}, JSON.stringify(message));
-        document.getElementById("message").value = "";
+        if (mess) {
+          var messagecont = {
+            from: "user",
+            text: mess,
+          };
+          stompClient.send("/app/send", {}, JSON.stringify(messagecont));
+          document.getElementById("message").value = "";
+        }
       }
       function show(message) {
         var mess = document.getElementById("seemessage");
-        mess.innerHTML += JSON.stringify(message);
+        mess.textContent = message.from + ": " + message.text;
       }
       connect();
     </script>
