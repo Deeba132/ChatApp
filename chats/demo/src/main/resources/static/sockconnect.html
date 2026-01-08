@@ -16,8 +16,8 @@
       <label for="chat-1">Chat-1</label>
       <input type="text" id="message" placeholder="enter-text" />
       <button id="send" onclick="sendMessage()">Send</button>
-      <p id="seemessage"></p>
     </div>
+    <div id="seemessage"></div>
 
     <script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
@@ -45,7 +45,9 @@
       }
       function show(message) {
         var mess = document.getElementById("seemessage");
-        mess.textContent = message.from + ": " + message.text;
+        var elm = document.createElement("p");
+        elm.textContent = message.from + ": " + message.text;
+        mess.appendChild(elm);
       }
       connect();
     </script>
