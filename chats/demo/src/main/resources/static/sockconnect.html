@@ -36,7 +36,7 @@
         var mess = document.getElementById("message").value;
         if (mess) {
           var messagecont = {
-            from: "user",
+            from: "user" + Math.random(),
             text: mess,
           };
           stompClient.send("/app/send", {}, JSON.stringify(messagecont));
