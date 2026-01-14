@@ -23,7 +23,7 @@
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 
     <script>
-      var socket = new SockJS("/ws");
+      var socket = new SockJS("http://192.168.0.116:8080/ws");
       var stompClient = Stomp.over(socket);
       function connect() {
         stompClient.connect({}, function (frame) {
